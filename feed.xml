@@ -5,9 +5,38 @@
     <atom:link href="http://www.yuzijie.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://www.yuzijie.com</link>
     <description>Words &amp; My life</description>
-    <pubDate>Thu, 20 Feb 2014 01:00:00 +0100</pubDate>
+    <pubDate>Sat, 22 Feb 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Saturday</title>
+      <link>http://www.yuzijie.com/articles/22-February-2014/</link>
+      <pubDate>Sat, 22 Feb 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.yuzijie.com/articles/22-February-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;今天什么也没做，因为昨天刚刚考完 Economics。全身就像泄了气的皮球，怎么也鼓不起来。睡觉、打游戏伴随了我一整天。&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Friday</title>
+      <link>http://www.yuzijie.com/articles/21-February-2014/</link>
+      <pubDate>Fri, 21 Feb 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.yuzijie.com/articles/21-February-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;回顾自己做网站的历史，要追溯到高中时代，那个时候，个人博客刚刚热起来，有个个人空间，就像有个自己的小房子，可以在上面涂涂抹抹，还可以让别人看到，对我来说吸引力非常大。一开始是 &lt;a href=&quot;http://en.wikipedia.org/wiki/Windows_Live_Spaces&quot;&gt;Windows Live Spaces&lt;/a&gt;，自己申请一个帐号，往里面添加各种模块，可以显示文字，图片和视频，非常方便。我同学就有一个这样的博客，名字叫木桶小队，上面曾经写着一句话，是来自我的外教 David Quentin Dauthier 的：“写作能够让你了解自己。”&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;后来又出现了Google 的 Blogger 等博客平台，但是出现没有多久就被墙了。自从国内把 Blog 翻译成博客以后，新浪，搜狐，凤凰网都有自己的博客平台，我也曾经注册过新浪博客，但是从来也没有坚持下来，原因是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;广告太多。各种小广告、浮动窗口，层出不穷，让你感觉像进了火车站。&lt;/li&gt;
+&lt;li&gt;博客外观单一。所有的博客结构和样式都差不多，千篇一律，而且不能添加和修改自己想要的模块，非常不自由。&lt;/li&gt;
+&lt;li&gt;有被删贴的风险。自己的博客被人监视，不能畅所欲言。&lt;/li&gt;
+&lt;li&gt;没有办法添加个性域名。名称不好记，而且永远受制于一家公司，一旦该公司停止了服务，你就永远失去了这个网站入口。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;刚上本科的时候，宿舍里面还没有网，没事的时候跑到网吧上网，我就在查怎么建立自己的网站，后来自然就找到了 Wordpress，但是什么 DNS, Domain name, SQL, php，对我来说都是从来没有听说过的东西，建立自己的网站简直是天方夜谭。后来渐渐知道了这些知识，就开始用 Wordpress 建立自己的网站。曾经注册过好多域名：&lt;a href=&quot;http://yuzijie-is.me，http://stillyaroma.com&quot;&gt;http://yuzijie-is.me，http://stillyaroma.com&lt;/a&gt;, &lt;a href=&quot;http://yuzj.net&quot;&gt;http://yuzj.net&lt;/a&gt;, &lt;a href=&quot;http://yzj.name&quot;&gt;http://yzj.name&lt;/a&gt; 等等等等。但是现在都废弃了。可能是因为 Wordpress 太自由，我把太多时间都花在怎么布置博客上了，研究各种插件怎么使用和主题美化，虽然对 html 和 css 倒是懂的更多了，可是却还是迟迟没有真正去写博客。&lt;/p&gt;
+&lt;p&gt;这几年接触了 Static Site Generator，知道了 &lt;a href=&quot;https://www.nearlyfreespeech.net/&quot;&gt;NearlyFreeSpeech.NET&lt;/a&gt;，&lt;a href=&quot;http://pages.github.com/&quot;&gt;Github.io&lt;/a&gt;，我可以用 Git 来发布自己的网站了，感觉更方便，而且也不用太担心网站优化等什么与写作无关的事情了。每天一段话的博客模式渐渐成熟，我的博客渐渐步入正轨。&lt;/p&gt;
+&lt;p&gt;我之所以要和个人网站纠缠这么多年，是希望自己有一个反思的平台，督促我不断努力，也希望能够开辟一块自己的天地，在上面尽情发挥自己的想象力，阻止自己的大脑僵化、老去。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Thursday</title>
       <link>http://www.yuzijie.com/articles/20-February-2014/</link>
