@@ -73,6 +73,11 @@ li {
   margin-bottom: 0.5em;
 }
 
+li a {
+  color: #bd6982;
+  text-decoration: none;
+}
+
 blockquote {
   margin: 1.2em 3em;
   padding-left: 1em;
