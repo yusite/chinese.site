@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>每天一段话</title>
+    <title>诗意栖居</title>
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
-    <description>Words &amp; My life</description>
+    <description>Living the artistic way</description>
     <pubDate>Sat, 01 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
