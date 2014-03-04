@@ -5,9 +5,18 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Mon, 03 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Tue, 04 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Tuesday</title>
+      <link>http://cn.yuz.me/articles/04-March-2014/</link>
+      <pubDate>Tue, 04 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/04-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;从今天起，我要正式开始我的&lt;a href=&quot;http://it.yuz.me/&quot;&gt;意大利语博客&lt;/a&gt;和&lt;a href=&quot;http://pkm.yuz.me/&quot;&gt;个人知识管理博客&lt;/a&gt;了，这是我实施的大计划的一部分。我的计划之一是设计一种有效的学习方式，进行终身的学习。这种学习方式要求我把学习成果按时记录下来，一方面以博客的形式发布，一方面整理成为我的知识库便于以后查询。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Monday</title>
       <link>http://cn.yuz.me/articles/03-March-2014/</link>
