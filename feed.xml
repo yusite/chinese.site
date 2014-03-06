@@ -5,9 +5,18 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Tue, 04 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Wed, 05 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Wednesday</title>
+      <link>http://cn.yuz.me/articles/05-March-2014/</link>
+      <pubDate>Wed, 05 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/05-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;做事情的时候需要注意的问题：一、集中注意力做自己需要做的事情，不要受别的娱乐项目的干扰。二、学习要踏实，稳扎稳打，不要担心每天的进步太小，小到看不见，要对自己有信心。三、严肃对待生活每一分钟，要像备考一样紧张起来！&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Tuesday</title>
       <link>http://cn.yuz.me/articles/04-March-2014/</link>
