@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Sunday - 诗意栖居
+    </title>
+    <link rel="alternate" href="http://cn.yuz.me/feed.xml" type="application/rss+xml" title="Living the artistic way">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/favicon.ico?ver=3.0" type="image/x-icon">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Sunday</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:guest@yuzijie.com">Yu Zijie</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>这是 Javascript&nbsp;系列文章的第二篇。今天的任务是把昨天结尾部分的计算平方的小程序嵌入到网页里面。这里需要用到一个转换函数。</p>
+<p><span class="more"></span></p>
+<p>先看一个程序：</p>
+<pre><code>&lt;input type=&quot;button&quot; id=&quot;submitButton&quot; value=&quot;Press Me!&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+    function MagicButtonManager(buttonId, message)
+    {
+        this._message = message;
+        var btn = document.getElementById(buttonId);
+        btn.onclick = this.showMessage;
+    }
+
+    MagicButtonManager.prototype.showMessage = function()
+    {
+        alert(this._message);
+    }
+
+    var m = new MagicButtonManager(&#39;submitButton&#39;, &#39;Hello World!&#39;);
+
+&lt;/script&gt;
+</code></pre><p>解释一下，<code>MagicButtonManager()</code> 是构造函数，接收参数 <code>message</code> 和 <code>buttonId</code>，当按钮按下，弹出显示框显示：Hello&nbsp;World!</p>
+<p>但是执行上面的程序显示框却显示：<strong>undefined</strong>。问题出在 <code>btn.onclick = this.showMessage;</code> 这句话上。如果这样写，那么</p>
+<pre><code>MagicButtonManager.prototype.showMessage = function()
+{
+    alert(this._message);
+}
+</code></pre><p>里面的 <code>this</code> 指向 <code>submitButton</code> 而不是 <code>MagicButtonManager</code>，所以 <code>this._message</code> 是 undefined，没有定义。我们需要做的，是让按钮通过对象调用 <code>showMessage()</code> 方法，让 <code>this</code> 正确的指向 <code>MagicButtonManager</code>。</p>
+<p>我们建立一个新的函数：</p>
+<pre><code>function Delegate(object, method)
+{
+    var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+    return shim;
+}
+</code></pre><p>这个函数返回一个属于 object 的方法，这个方法正是 <code>btn.onclick</code> 需要的，然后将</p>
+<pre><code>btn.onclick = this.showMessage;
+</code></pre><p>改成</p>
+<pre><code>btn.onclick = Delegate(this, this.showMessage);
+</code></pre><p>最终程序为：</p>
+<pre><code>&lt;input type=&quot;button&quot; id=&quot;submitButton&quot; value=&quot;Press Me!&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+
+    function MagicButtonManager(buttonId, message)
+    {
+        this._message = message;
+        var btn = document.getElementById(buttonId);
+        btn.onclick = Delegate(this, this.showMessage);
+    }
+
+    MagicButtonManager.prototype.showMessage = function()
+    {
+        alert(this._message);
+    }
+
+    function Delegate(object, method)
+    {
+        var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+        return shim;
+    }
+
+    var m = new MagicButtonManager(&#39;submitButton&#39;, &#39;Hello World!&#39;);
+
+&lt;/script&gt;
+</code></pre><p>这样就可以正确得到结果啦。</p>
+<p><strong>这就是 <code>apply()</code> 方法的实用之处，可以纠正 <code>this</code> 的不正确指向。</strong></p>
+<p>根据上面的经验，我把昨天的程序进行改写：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;输出数字的平方&lt;/h1&gt;
+    &lt;form&gt;
+        请输入一个数字：&lt;input type=&quot;text&quot; id=&quot;input&quot; /&gt;
+        &lt;input type=&quot;button&quot; id=&quot;submitButton&quot; value=&quot;Show result!&quot; /&gt;
+    &lt;/form&gt;
+    &lt;p id=&quot;result&quot;&gt;结果会显示在这里&lt;/p&gt;
+
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        function TheButton (buttonId, InputValue, ResultValue)
+        {
+            this.InputValue = InputValue;
+            this.ResultValue = ResultValue;
+            var btn = document.getElementById(buttonId);
+            btn.onclick = Delegate(this, this.showResult);
+        }
+
+        TheButton.prototype.showResult = function() {
+            var num = document.getElementById(this.InputValue).value;
+            num = num * num;
+            var show = document.getElementById(this.ResultValue);
+            show.innerHTML = num;
+        }
+
+        function Delegate(object, method)
+        {
+            var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+            return shim;
+        }
+        var m = new TheButton(&#39;submitButton&#39;, &#39;input&#39;, &#39;result&#39;);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>有兴趣的朋友可以复制上面的代码，保存为 <code>html</code> 格式的文件，查看运行结果。</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!-- section.about-->
+        <!--   !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Yu Zijie &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

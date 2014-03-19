@@ -5,9 +5,130 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Sat, 15 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Sun, 16 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Sunday</title>
+      <link>http://cn.yuz.me/articles/16-March-2014/</link>
+      <pubDate>Sun, 16 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/16-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;这是 Javascript 系列文章的第二篇。今天的任务是把昨天结尾部分的计算平方的小程序嵌入到网页里面。这里需要用到一个转换函数。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;先看一个程序：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;input type=&amp;quot;button&amp;quot; id=&amp;quot;submitButton&amp;quot; value=&amp;quot;Press Me!&amp;quot; /&amp;gt;
+
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+
+    function MagicButtonManager(buttonId, message)
+    {
+        this._message = message;
+        var btn = document.getElementById(buttonId);
+        btn.onclick = this.showMessage;
+    }
+
+    MagicButtonManager.prototype.showMessage = function()
+    {
+        alert(this._message);
+    }
+
+    var m = new MagicButtonManager(&amp;#39;submitButton&amp;#39;, &amp;#39;Hello World!&amp;#39;);
+
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解释一下，&lt;code&gt;MagicButtonManager()&lt;/code&gt; 是构造函数，接收参数 &lt;code&gt;message&lt;/code&gt; 和 &lt;code&gt;buttonId&lt;/code&gt;，当按钮按下，弹出显示框显示：Hello World!&lt;/p&gt;
+&lt;p&gt;但是执行上面的程序显示框却显示：&lt;strong&gt;undefined&lt;/strong&gt;。问题出在 &lt;code&gt;btn.onclick = this.showMessage;&lt;/code&gt; 这句话上。如果这样写，那么&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MagicButtonManager.prototype.showMessage = function()
+{
+    alert(this._message);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;里面的 &lt;code&gt;this&lt;/code&gt; 指向 &lt;code&gt;submitButton&lt;/code&gt; 而不是 &lt;code&gt;MagicButtonManager&lt;/code&gt;，所以 &lt;code&gt;this._message&lt;/code&gt; 是 undefined，没有定义。我们需要做的，是让按钮通过对象调用 &lt;code&gt;showMessage()&lt;/code&gt; 方法，让 &lt;code&gt;this&lt;/code&gt; 正确的指向 &lt;code&gt;MagicButtonManager&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;我们建立一个新的函数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Delegate(object, method)
+{
+    var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+    return shim;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个函数返回一个属于 object 的方法，这个方法正是 &lt;code&gt;btn.onclick&lt;/code&gt; 需要的，然后将&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;btn.onclick = this.showMessage;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;改成&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;btn.onclick = Delegate(this, this.showMessage);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最终程序为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;input type=&amp;quot;button&amp;quot; id=&amp;quot;submitButton&amp;quot; value=&amp;quot;Press Me!&amp;quot; /&amp;gt;
+
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+
+    function MagicButtonManager(buttonId, message)
+    {
+        this._message = message;
+        var btn = document.getElementById(buttonId);
+        btn.onclick = Delegate(this, this.showMessage);
+    }
+
+    MagicButtonManager.prototype.showMessage = function()
+    {
+        alert(this._message);
+    }
+
+    function Delegate(object, method)
+    {
+        var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+        return shim;
+    }
+
+    var m = new MagicButtonManager(&amp;#39;submitButton&amp;#39;, &amp;#39;Hello World!&amp;#39;);
+
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样就可以正确得到结果啦。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这就是 &lt;code&gt;apply()&lt;/code&gt; 方法的实用之处，可以纠正 &lt;code&gt;this&lt;/code&gt; 的不正确指向。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;根据上面的经验，我把昨天的程序进行改写：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;h1&amp;gt;输出数字的平方&amp;lt;/h1&amp;gt;
+    &amp;lt;form&amp;gt;
+        请输入一个数字：&amp;lt;input type=&amp;quot;text&amp;quot; id=&amp;quot;input&amp;quot; /&amp;gt;
+        &amp;lt;input type=&amp;quot;button&amp;quot; id=&amp;quot;submitButton&amp;quot; value=&amp;quot;Show result!&amp;quot; /&amp;gt;
+    &amp;lt;/form&amp;gt;
+    &amp;lt;p id=&amp;quot;result&amp;quot;&amp;gt;结果会显示在这里&amp;lt;/p&amp;gt;
+
+    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+        function TheButton (buttonId, InputValue, ResultValue)
+        {
+            this.InputValue = InputValue;
+            this.ResultValue = ResultValue;
+            var btn = document.getElementById(buttonId);
+            btn.onclick = Delegate(this, this.showResult);
+        }
+
+        TheButton.prototype.showResult = function() {
+            var num = document.getElementById(this.InputValue).value;
+            num = num * num;
+            var show = document.getElementById(this.ResultValue);
+            show.innerHTML = num;
+        }
+
+        function Delegate(object, method)
+        {
+            var shim = function()
+                {
+                    method.apply(object, arguments);
+                }
+            return shim;
+        }
+        var m = new TheButton(&amp;#39;submitButton&amp;#39;, &amp;#39;input&amp;#39;, &amp;#39;result&amp;#39;);
+    &amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;有兴趣的朋友可以复制上面的代码，保存为 &lt;code&gt;html&lt;/code&gt; 格式的文件，查看运行结果。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Saturday</title>
       <link>http://cn.yuz.me/articles/15-March-2014/</link>
