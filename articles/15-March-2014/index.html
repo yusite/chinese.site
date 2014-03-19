@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Saturday - 诗意栖居
+    </title>
+    <link rel="alternate" href="http://cn.yuz.me/feed.xml" type="application/rss+xml" title="Living the artistic way">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/favicon.ico?ver=3.0" type="image/x-icon">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Saturday</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:guest@yuzijie.com">Yu Zijie</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>今天是 Javascript 编程笔记系列的第一篇。今天介绍的是 <code>call()</code> 和 <code>apply()</code> 两个函数。</p>
+<p><span class="more"></span></p>
+<ol>
+<li><p>在 Javascript&nbsp;里面，“函数”和“方法”两个概念有一点小区别：即当“函数”作为一个对象的元素出现时，它便叫做“方法”。</p>
+</li>
+<li><p>在 Javascript 里面，“函数”也何以被看成一个对象。那么，新建的“函数”也有它自己的“方法”，例如：<code>toString()</code>，<code>call()</code> 和 <code>apply()</code>。</p>
+</li>
+<li><p>当你在最外层定义变量和函数时，变量和函数实际上同时是全局对象的元素。例如：</p>
+<pre><code> var x = 10;
+
+ function f() {
+     alert(this.x);
+ }
+
+ f();
+</code></pre><p>浏览器输出的结果是 10，这里的 this&nbsp;指的是全局对象。</p>
+</li>
+<li><p><code>call()</code> 的作用是在“方法”执行时，指定它归属于哪个对象，即指明 <code>this</code> 指向哪个对象：</p>
+<pre><code> var o = { x: 15 };
+
+ function f() {
+     alert(this.x);
+ }
+
+ f.call(o);
+</code></pre><p>输出结果是&nbsp;15。</p>
+</li>
+<li><p><code>call()</code> 还可以接受参数：</p>
+<pre><code> var o = { x: 15 };
+
+ function f(message1, message2) {
+     alert(message1 + this.x + message2);
+ }
+
+ f.call(o, &quot;The value of x is &quot;, &quot;!&quot;);
+</code></pre></li>
+<li><p><code>call()</code> 和 <code>apply()</code> 非常相似，区别仅仅是 <code>apply()</code> 需要数组作为参数：</p>
+<pre><code> var o = { x: 15 };
+
+ function f(message1, message2) {
+     alert(message1 + this.x + message2);
+ }
+
+ f.apply(o, [&quot;The value of x is &quot;, &quot;!&quot;]);
+</code></pre></li>
+<li><p>在 Javascript&nbsp;里面，每一个函数都可以接受一个可变的参数列表。如果一个函数只接受一个参数，而程序却传递了五个参数给它，这样并不会出错，但函数只处理第一个参数。</p>
+</li>
+<li><p>如果想让函数接受任意多的参数，可以用关键字 <code>arguments</code>：</p>
+<pre><code> function f(message) {
+     for(var i = 1; i &lt; arguments.length; i++) {
+         message += arguments[i];
+     }
+     alert(message);
+ }
+
+ f(&quot;H&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;);
+</code></pre><p>最后输出结果是：Hello。</p>
+</li>
+<li><p><code>arguments</code> 虽然表现得非常像数组，但它不是数组，因为它没有 <code>split</code>、<code>push</code>、或者 <code>pop</code> 方法。</p>
+</li>
+<li><p>下面的程序，输出一个值的平方：</p>
+<pre><code>var o = { x: 15 };
+function f(message1, message2)
+{
+    alert(message1 + (this.x * this.x) + message2);
+}
+function g(object, func)
+{           
+    // arguments[0] == object
+    // arguments[1] == func
+    var args = []; // empty array
+    for(var i = 2; i &lt; arguments.length; i++)
+    {
+        args.push(arguments[i]);
+    }
+    func.apply(object, args);
+}
+g(o, f, &quot;The value of x squared = &quot;, &quot;. Wow!&quot;);
+</code></pre></li>
+</ol>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!-- section.about-->
+        <!--   !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Yu Zijie &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

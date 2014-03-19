@@ -5,9 +5,97 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Wed, 12 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Sat, 15 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Saturday</title>
+      <link>http://cn.yuz.me/articles/15-March-2014/</link>
+      <pubDate>Sat, 15 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/15-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;今天是 Javascript 编程笔记系列的第一篇。今天介绍的是 &lt;code&gt;call()&lt;/code&gt; 和 &lt;code&gt;apply()&lt;/code&gt; 两个函数。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在 Javascript 里面，“函数”和“方法”两个概念有一点小区别：即当“函数”作为一个对象的元素出现时，它便叫做“方法”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在 Javascript 里面，“函数”也何以被看成一个对象。那么，新建的“函数”也有它自己的“方法”，例如：&lt;code&gt;toString()&lt;/code&gt;，&lt;code&gt;call()&lt;/code&gt; 和 &lt;code&gt;apply()&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;当你在最外层定义变量和函数时，变量和函数实际上同时是全局对象的元素。例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var x = 10;
+
+ function f() {
+     alert(this.x);
+ }
+
+ f();
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;浏览器输出的结果是 10，这里的 this 指的是全局对象。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;call()&lt;/code&gt; 的作用是在“方法”执行时，指定它归属于哪个对象，即指明 &lt;code&gt;this&lt;/code&gt; 指向哪个对象：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var o = { x: 15 };
+
+ function f() {
+     alert(this.x);
+ }
+
+ f.call(o);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;输出结果是 15。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;call()&lt;/code&gt; 还可以接受参数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var o = { x: 15 };
+
+ function f(message1, message2) {
+     alert(message1 + this.x + message2);
+ }
+
+ f.call(o, &amp;quot;The value of x is &amp;quot;, &amp;quot;!&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;call()&lt;/code&gt; 和 &lt;code&gt;apply()&lt;/code&gt; 非常相似，区别仅仅是 &lt;code&gt;apply()&lt;/code&gt; 需要数组作为参数：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var o = { x: 15 };
+
+ function f(message1, message2) {
+     alert(message1 + this.x + message2);
+ }
+
+ f.apply(o, [&amp;quot;The value of x is &amp;quot;, &amp;quot;!&amp;quot;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在 Javascript 里面，每一个函数都可以接受一个可变的参数列表。如果一个函数只接受一个参数，而程序却传递了五个参数给它，这样并不会出错，但函数只处理第一个参数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果想让函数接受任意多的参数，可以用关键字 &lt;code&gt;arguments&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; function f(message) {
+     for(var i = 1; i &amp;lt; arguments.length; i++) {
+         message += arguments[i];
+     }
+     alert(message);
+ }
+
+ f(&amp;quot;H&amp;quot;, &amp;quot;e&amp;quot;, &amp;quot;l&amp;quot;, &amp;quot;l&amp;quot;, &amp;quot;o&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最后输出结果是：Hello。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;arguments&lt;/code&gt; 虽然表现得非常像数组，但它不是数组，因为它没有 &lt;code&gt;split&lt;/code&gt;、&lt;code&gt;push&lt;/code&gt;、或者 &lt;code&gt;pop&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;下面的程序，输出一个值的平方：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var o = { x: 15 };
+function f(message1, message2)
+{
+    alert(message1 + (this.x * this.x) + message2);
+}
+function g(object, func)
+{           
+    // arguments[0] == object
+    // arguments[1] == func
+    var args = []; // empty array
+    for(var i = 2; i &amp;lt; arguments.length; i++)
+    {
+        args.push(arguments[i]);
+    }
+    func.apply(object, args);
+}
+g(o, f, &amp;quot;The value of x squared = &amp;quot;, &amp;quot;. Wow!&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     <item>
       <title>Wednesday</title>
       <link>http://cn.yuz.me/articles/12-March-2014/</link>
