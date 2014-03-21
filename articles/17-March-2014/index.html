@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Monday - 诗意栖居
+    </title>
+    <link rel="alternate" href="http://cn.yuz.me/feed.xml" type="application/rss+xml" title="Living the artistic way">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/favicon.ico?ver=3.0" type="image/x-icon">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Monday</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:guest@yuzijie.com">Yu Zijie</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>这是 Javascript 系列文章的第三篇。今天要讨论的是 Javascript 里的 Scope 和&nbsp;Closures。</p>
+<p><span class="more"></span></p>
+<ol>
+<li><p>Scope&nbsp;是变量的使用范围，即作用域。本地变量可以覆盖掉全局变量，例如：</p>
+<pre><code> var x = 10;
+ function f()
+ {    
+     {
+         var x = 20; // No block scope in ECMAScript, this x is available everywhere inside f()   
+     }
+
+     alert(x);
+ }
+ f();       // 显示 20
+ alert(x);  // 显示 10
+</code></pre><p>但是函数外部无法读取函数内的局部变量</p>
+<pre><code> function f()
+ {
+     var n=999;
+ }
+
+ alert(n); // error
+</code></pre></li>
+<li><p>我们通过返回值的形式读取函数内部的变量：</p>
+<pre><code> function f1()
+ {
+     var n=999;
+
+     function f2()
+     {
+         alert(n);
+     }
+
+     return f2;
+ }
+
+ var result=f1();
+ result(); // 999
+</code></pre></li>
+<li><p>下面这个图片显示了变量不同的作用域：
+<img src="/articles/17-March-2014/scope.png" alt="Variable&#39;s scope">
+x、y、z 是三个变量，红色方框显示了它们的作用域，蓝色箭头表示作用域链。<code>alert(x+y+z)</code> 函数首先在作用域 g 里面寻找变量的值，只找到了 z，之后再到作用域 f 里面查找变量的值，找到了&nbsp;y，以此类推，直到全部找到为止，这就是作用域链。</p>
+</li>
+<li><p>Closure 中文叫做闭包。Closure 的英文解释是： A closure is a function or reference to a function together with a referencing&nbsp;environment。中文解释是：闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+</li>
+<li><p>下面的程序的程序中，<code>doAlert()</code> 就是闭包，它引用了自由变量 <code>y</code>：</p>
+<pre><code> var x = 5;
+ var y = 20;
+
+ function makePrintIt(y)
+ {
+     return function doAlert()
+     {
+         alert(x+y)
+     }       
+ }
+
+ var f1 = makePrintIt(5);
+ var f2 = makePrintIt(10);
+
+ f1();
+ f2();
+</code></pre><p>虽然 <code>f1</code> 和 <code>f2</code> 都是 <code>doAlert()</code> 对象，但是自由变量 <code>y</code> 的值随构造函数创建的<strong>实例不同</strong>而不同。最后结果是 <code>f1()</code> 输出 10，而 <code>f2()</code> 输出&nbsp;15。</p>
+</li>
+</ol>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!-- section.about-->
+        <!--   !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Yu Zijie &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

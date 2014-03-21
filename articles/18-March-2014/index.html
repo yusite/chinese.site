@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Tuesday - 诗意栖居
+    </title>
+    <link rel="alternate" href="http://cn.yuz.me/feed.xml" type="application/rss+xml" title="Living the artistic way">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/favicon.ico?ver=3.0" type="image/x-icon">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Tuesday</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:guest@yuzijie.com">Yu Zijie</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>这是 Javascript 系列文章的第四篇。为了加深我对于闭包的理解，我仔细研究了<a href="http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html">阮一峰的一篇博客</a>，最后的思考题却使我对闭包更加疑惑了，下面是我对闭包的一些思考。</p>
+<p><span class="more"></span></p>
+<p>首先摘录两则使用闭包的注意事项：</p>
+<ol>
+<li><p>由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在<span class="caps">IE</span>中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。</p>
+</li>
+<li><p>闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private&nbsp;value），这时一定要小心，不要随便改变父函数内部变量的值。</p>
+</li>
+</ol>
+<p>下面两个函数显示了 Javascript&nbsp;的一个“特性”，我认为这个“特性”并不好：</p>
+<pre><code>// 程序一
+function f()
+{
+    var n=999;
+}
+f();
+alert(n); // error
+
+// 程序二
+function f()
+{
+    n=999;
+}
+f();
+alert(n); // 999
+</code></pre><p>仅仅由于给 <code>n</code> 赋值的时候前面没有加上 <code>var</code>，第二个程序的变量 <code>n</code> 就变成了全局变量，而第一个程序的 <code>n</code> 却是 <code>f()</code> 的局部变量。为了防止出错，最好<strong>每次</strong>都在变量赋值语句前面加上 <code>var</code>！</p>
+<p>下面摘录一则我认为很重要的博客评论，这个问题我一直没有想过，先看两段程序：</p>
+<pre><code>function f1()
+{
+    var n=999;
+
+    function f2()
+    {
+        alert(n);
+    }
+    return f2;
+}
+
+var result=f1();
+result(); // 999
+</code></pre><p>为什么不写成这样？</p>
+<pre><code>function f1()
+{
+    var n=999;
+    return n;
+}
+
+var result=f1();
+alert(result);
+</code></pre><p>原因是这样的：第一个函数返回的是闭包，但是由于该闭包需要 <code>f1()</code> 的作用域，所以，变量 <code>n</code> 的内存区域<strong>一直保留到 <code>result</code> 被删除为止</strong>。第二个函数，调用 <code>f1()</code> 的时候，会新建内存区域来储存变量 <code>result</code> 的值，同时变量 <code>n</code> 的内存区域<strong>在函数执行完后即被释放</strong>。</p>
+<p>下面是让我非常困惑的一道思考题：</p>
+<pre><code>// 程序一
+var name = &quot;The Window&quot;;
+var object = {
+    name : &quot;My Object&quot;,
+    getNameFunc : function() {
+        return function(){
+            return this.name;
+        };
+    }
+};
+
+var x = object.getNameFunc();
+alert(x()); // 输出为：“The Window”
+
+// 程序二
+var name = &quot;The Window&quot;;
+var object = {
+    name : &quot;My Object&quot;,
+    getNameFunc : function() {
+        var that = this;
+        return function() {
+            return that.name;
+        };
+    }
+};
+
+var x = object.getNameFunc();
+alert(x()); // 输出为：“My Object”
+</code></pre><p>使我困惑的主要是 <code>this</code> 到底指向了哪里？经过我反复的思考，大概明白了其中的奥秘：</p>
+<ol>
+<li><p>两段程序，返回的都是闭包函数。</p>
+</li>
+<li><p>第一段程序，返回值是这样的：</p>
+<pre><code> function() {
+     return this.name;
+ }
+</code></pre><p>抛开大环境（即函数是写在 <code>object</code> 里面的）不谈，单纯从字面上来看，<code>this</code> 应该指向的是<strong>被赋予了这个函数</strong>的变量的环境，那么在第一段程序里 <code>this</code> 应当指向全局，下面的两段程序本质上是一样的：</p>
+<pre><code> var x = object.getNameFunc();
+</code></pre><pre><code> var x = function() {
+     return this.name;
+ } // x 是全局变量
+</code></pre><p>所以输出为：“The&nbsp;Window”。</p>
+</li>
+<li><p>第二段程序与第一段程序原理相同，唯一不同的是：由于闭包的特性，<code>var that = this;</code>  这句话使得 <code>that</code> 指向了 <code>object</code> 对象，而且会随着变量 <code>x</code> 的存在而一直存在。所以，输出为：“My&nbsp;Object”。</p>
+</li>
+<li><p>从这个例子可以看到，<code>object</code> 里面定义的 <code>getNameFunc</code> 的第一层函数中，如果使用 <code>this</code>，那么所指向的环境是 <code>object</code> 对象。而第二层以后，<code>this</code> 的指向便不再确定，随新的变量的不同而不同。</p>
+</li>
+<li><p>使用 <code>apply()</code> 方法，人为确定 <code>this</code> 的指向，可以使第一段程序输出与第二段程序相同的结果：</p>
+<pre><code> var name = &quot;The Window&quot;;
+ var object = {
+     name : &quot;My Object&quot;,
+     getNameFunc : function() {
+         return function(){
+             return this.name;
+         };
+     }
+ };
+ var x = object.getNameFunc();
+ alert(x.apply(object)); // 输出为：“My Object”
+</code></pre></li>
+</ol>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <!-- section.about-->
+        <!--   !=contents['about.md'].html-->
+        <section class="copy">
+          <p>&copy; 2014 Yu Zijie &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

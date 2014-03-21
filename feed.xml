@@ -5,9 +5,202 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Sun, 16 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Tue, 18 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Tuesday</title>
+      <link>http://cn.yuz.me/articles/18-March-2014/</link>
+      <pubDate>Tue, 18 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/18-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;这是 Javascript 系列文章的第四篇。为了加深我对于闭包的理解，我仔细研究了&lt;a href=&quot;http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html&quot;&gt;阮一峰的一篇博客&lt;/a&gt;，最后的思考题却使我对闭包更加疑惑了，下面是我对闭包的一些思考。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;首先摘录两则使用闭包的注意事项：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面两个函数显示了 Javascript 的一个“特性”，我认为这个“特性”并不好：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 程序一
+function f()
+{
+    var n=999;
+}
+f();
+alert(n); // error
+
+// 程序二
+function f()
+{
+    n=999;
+}
+f();
+alert(n); // 999
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;仅仅由于给 &lt;code&gt;n&lt;/code&gt; 赋值的时候前面没有加上 &lt;code&gt;var&lt;/code&gt;，第二个程序的变量 &lt;code&gt;n&lt;/code&gt; 就变成了全局变量，而第一个程序的 &lt;code&gt;n&lt;/code&gt; 却是 &lt;code&gt;f()&lt;/code&gt; 的局部变量。为了防止出错，最好&lt;strong&gt;每次&lt;/strong&gt;都在变量赋值语句前面加上 &lt;code&gt;var&lt;/code&gt;！&lt;/p&gt;
+&lt;p&gt;下面摘录一则我认为很重要的博客评论，这个问题我一直没有想过，先看两段程序：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function f1()
+{
+    var n=999;
+
+    function f2()
+    {
+        alert(n);
+    }
+    return f2;
+}
+
+var result=f1();
+result(); // 999
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为什么不写成这样？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function f1()
+{
+    var n=999;
+    return n;
+}
+
+var result=f1();
+alert(result);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;原因是这样的：第一个函数返回的是闭包，但是由于该闭包需要 &lt;code&gt;f1()&lt;/code&gt; 的作用域，所以，变量 &lt;code&gt;n&lt;/code&gt; 的内存区域&lt;strong&gt;一直保留到 &lt;code&gt;result&lt;/code&gt; 被删除为止&lt;/strong&gt;。第二个函数，调用 &lt;code&gt;f1()&lt;/code&gt; 的时候，会新建内存区域来储存变量 &lt;code&gt;result&lt;/code&gt; 的值，同时变量 &lt;code&gt;n&lt;/code&gt; 的内存区域&lt;strong&gt;在函数执行完后即被释放&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;下面是让我非常困惑的一道思考题：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 程序一
+var name = &amp;quot;The Window&amp;quot;;
+var object = {
+    name : &amp;quot;My Object&amp;quot;,
+    getNameFunc : function() {
+        return function(){
+            return this.name;
+        };
+    }
+};
+
+var x = object.getNameFunc();
+alert(x()); // 输出为：“The Window”
+
+// 程序二
+var name = &amp;quot;The Window&amp;quot;;
+var object = {
+    name : &amp;quot;My Object&amp;quot;,
+    getNameFunc : function() {
+        var that = this;
+        return function() {
+            return that.name;
+        };
+    }
+};
+
+var x = object.getNameFunc();
+alert(x()); // 输出为：“My Object”
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;使我困惑的主要是 &lt;code&gt;this&lt;/code&gt; 到底指向了哪里？经过我反复的思考，大概明白了其中的奥秘：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;两段程序，返回的都是闭包函数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;第一段程序，返回值是这样的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; function() {
+     return this.name;
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;抛开大环境（即函数是写在 &lt;code&gt;object&lt;/code&gt; 里面的）不谈，单纯从字面上来看，&lt;code&gt;this&lt;/code&gt; 应该指向的是&lt;strong&gt;被赋予了这个函数&lt;/strong&gt;的变量的环境，那么在第一段程序里 &lt;code&gt;this&lt;/code&gt; 应当指向全局，下面的两段程序本质上是一样的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var x = object.getNameFunc();
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt; var x = function() {
+     return this.name;
+ } // x 是全局变量
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;所以输出为：“The Window”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;第二段程序与第一段程序原理相同，唯一不同的是：由于闭包的特性，&lt;code&gt;var that = this;&lt;/code&gt;  这句话使得 &lt;code&gt;that&lt;/code&gt; 指向了 &lt;code&gt;object&lt;/code&gt; 对象，而且会随着变量 &lt;code&gt;x&lt;/code&gt; 的存在而一直存在。所以，输出为：“My Object”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;从这个例子可以看到，&lt;code&gt;object&lt;/code&gt; 里面定义的 &lt;code&gt;getNameFunc&lt;/code&gt; 的第一层函数中，如果使用 &lt;code&gt;this&lt;/code&gt;，那么所指向的环境是 &lt;code&gt;object&lt;/code&gt; 对象。而第二层以后，&lt;code&gt;this&lt;/code&gt; 的指向便不再确定，随新的变量的不同而不同。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用 &lt;code&gt;apply()&lt;/code&gt; 方法，人为确定 &lt;code&gt;this&lt;/code&gt; 的指向，可以使第一段程序输出与第二段程序相同的结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var name = &amp;quot;The Window&amp;quot;;
+ var object = {
+     name : &amp;quot;My Object&amp;quot;,
+     getNameFunc : function() {
+         return function(){
+             return this.name;
+         };
+     }
+ };
+ var x = object.getNameFunc();
+ alert(x.apply(object)); // 输出为：“My Object”
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    <item>
+      <title>Monday</title>
+      <link>http://cn.yuz.me/articles/17-March-2014/</link>
+      <pubDate>Mon, 17 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/17-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;这是 Javascript 系列文章的第三篇。今天要讨论的是 Javascript 里的 Scope 和 Closures。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Scope 是变量的使用范围，即作用域。本地变量可以覆盖掉全局变量，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var x = 10;
+ function f()
+ {    
+     {
+         var x = 20; // No block scope in ECMAScript, this x is available everywhere inside f()   
+     }
+
+     alert(x);
+ }
+ f();       // 显示 20
+ alert(x);  // 显示 10
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但是函数外部无法读取函数内的局部变量&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; function f()
+ {
+     var n=999;
+ }
+
+ alert(n); // error
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;我们通过返回值的形式读取函数内部的变量：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; function f1()
+ {
+     var n=999;
+
+     function f2()
+     {
+         alert(n);
+     }
+
+     return f2;
+ }
+
+ var result=f1();
+ result(); // 999
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;下面这个图片显示了变量不同的作用域：
+&lt;img src=&quot;http://cn.yuz.me/articles/17-March-2014/scope.png&quot; alt=&quot;Variable&amp;#39;s scope&quot;&gt;
+x、y、z 是三个变量，红色方框显示了它们的作用域，蓝色箭头表示作用域链。&lt;code&gt;alert(x+y+z)&lt;/code&gt; 函数首先在作用域 g 里面寻找变量的值，只找到了 z，之后再到作用域 f 里面查找变量的值，找到了 y，以此类推，直到全部找到为止，这就是作用域链。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Closure 中文叫做闭包。Closure 的英文解释是： A closure is a function or reference to a function together with a referencing environment。中文解释是：闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;下面的程序的程序中，&lt;code&gt;doAlert()&lt;/code&gt; 就是闭包，它引用了自由变量 &lt;code&gt;y&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; var x = 5;
+ var y = 20;
+
+ function makePrintIt(y)
+ {
+     return function doAlert()
+     {
+         alert(x+y)
+     }       
+ }
+
+ var f1 = makePrintIt(5);
+ var f2 = makePrintIt(10);
+
+ f1();
+ f2();
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;虽然 &lt;code&gt;f1&lt;/code&gt; 和 &lt;code&gt;f2&lt;/code&gt; 都是 &lt;code&gt;doAlert()&lt;/code&gt; 对象，但是自由变量 &lt;code&gt;y&lt;/code&gt; 的值随构造函数创建的&lt;strong&gt;实例不同&lt;/strong&gt;而不同。最后结果是 &lt;code&gt;f1()&lt;/code&gt; 输出 10，而 &lt;code&gt;f2()&lt;/code&gt; 输出 15。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     <item>
       <title>Sunday</title>
       <link>http://cn.yuz.me/articles/16-March-2014/</link>
