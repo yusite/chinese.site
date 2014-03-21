@@ -177,7 +177,15 @@ alert(x()); // 输出为：“My Object”
 &lt;img src=&quot;http://cn.yuz.me/articles/17-March-2014/scope.png&quot; alt=&quot;Variable&amp;#39;s scope&quot;&gt;
 x、y、z 是三个变量，红色方框显示了它们的作用域，蓝色箭头表示作用域链。&lt;code&gt;alert(x+y+z)&lt;/code&gt; 函数首先在作用域 g 里面寻找变量的值，只找到了 z，之后再到作用域 f 里面查找变量的值，找到了 y，以此类推，直到全部找到为止，这就是作用域链。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Closure 中文叫做闭包。Closure 的英文解释是： A closure is a function or reference to a function together with a referencing environment。中文解释是：闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Closure 中文叫做闭包。Closure 的英文解释是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A closure is a function or reference to a function together with a referencing environment。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;中文解释是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;下面的程序的程序中，&lt;code&gt;doAlert()&lt;/code&gt; 就是闭包，它引用了自由变量 &lt;code&gt;y&lt;/code&gt;：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; var x = 5;

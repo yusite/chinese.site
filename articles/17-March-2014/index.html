@@ -65,7 +65,15 @@
 <img src="/articles/17-March-2014/scope.png" alt="Variable&#39;s scope">
 x、y、z 是三个变量，红色方框显示了它们的作用域，蓝色箭头表示作用域链。<code>alert(x+y+z)</code> 函数首先在作用域 g 里面寻找变量的值，只找到了 z，之后再到作用域 f 里面查找变量的值，找到了&nbsp;y，以此类推，直到全部找到为止，这就是作用域链。</p>
 </li>
-<li><p>Closure 中文叫做闭包。Closure 的英文解释是： A closure is a function or reference to a function together with a referencing&nbsp;environment。中文解释是：闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+<li><p>Closure 中文叫做闭包。Closure&nbsp;的英文解释是：</p>
+<blockquote>
+<p>A closure is a function or reference to a function together with a referencing&nbsp;environment。</p>
+</blockquote>
+</li>
+<li><p>中文解释是：</p>
+<blockquote>
+<p>闭包是引用了自由变量的函数。有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。闭包在运行时可以有多个实例，不同的引用环境和相同的函数组合可以产生不同的实例。</p>
+</blockquote>
 </li>
 <li><p>下面的程序的程序中，<code>doAlert()</code> 就是闭包，它引用了自由变量 <code>y</code>：</p>
 <pre><code> var x = 5;
