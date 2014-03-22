@@ -5,9 +5,70 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Tue, 18 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Wed, 19 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Wednesday</title>
+      <link>http://cn.yuz.me/articles/19-March-2014/</link>
+      <pubDate>Wed, 19 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/19-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;这是 Javascript 系列文章的第五篇，已经连续写了五天，Javascript 学习笔记暂时告一段落。今天讲讲怎样用 Javascript 来做比较。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;程序里面经常会涉及到两个值的比较，Javascript 默认按照字母顺序进行比较，即使输入的是数字，Javascript 也会先自动把它们转化成为字符，然后进行比较。所以，当比较的对象不是字符时，会出现意想不到的结果。比如：2 与 10 比较，结果是 10 小于 2，因为 10 的第一个字符 1 小于 2。&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，Javascript 提供了一个方法 &lt;code&gt;sort()&lt;/code&gt;，它让程序员来定义比较大小的方式。经过比较之后，传递一个值给 &lt;code&gt;sort()&lt;/code&gt;，这个值可以是正、负或者零。&lt;/p&gt;
+&lt;p&gt;比较两个数 a 和 b 的方法非常简单：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function cmp(a,b) {
+    return a - b;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;将这个方法作为 &lt;code&gt;sort(cmp)&lt;/code&gt; 的参数：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;如果 a 小于 b，返回值为负值，那么 &lt;code&gt;sort(cmp)&lt;/code&gt; 方法会把 a 排在 b 的前面。&lt;/li&gt;
+&lt;li&gt;如果 b 小于 a，返回值为正值，那么 &lt;code&gt;sort(cmp)&lt;/code&gt; 方法会把 b 排在 a 的前面。&lt;/li&gt;
+&lt;li&gt;如果 a 等于 b，返回值为零，那么 &lt;code&gt;sort(cmp)&lt;/code&gt; 会认为两个值相等。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面是一个具体的例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;列表自动排序&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;h1&amp;gt;列表自动排序&amp;lt;/h1&amp;gt;
+    &amp;lt;p&amp;gt;输入数字，点击确定，浏览器会将输入过的数字进行 &amp;lt;i&amp;gt;从小到大&amp;lt;/i&amp;gt; 排序。&amp;lt;/p&amp;gt;
+    &amp;lt;form&amp;gt;
+        请输入一个整数：&amp;lt;input type=&amp;quot;text&amp;quot; id=&amp;quot;input&amp;quot; /&amp;gt;
+        &amp;lt;input type=&amp;quot;button&amp;quot; id=&amp;quot;submit&amp;quot; value=&amp;quot;确定&amp;quot;&amp;gt;
+    &amp;lt;/form&amp;gt;
+    &amp;lt;p&amp;gt;输出：&amp;lt;/p&amp;gt;
+    &amp;lt;p id=&amp;quot;output&amp;quot;&amp;gt;&amp;lt;/p&amp;gt;
+
+    &amp;lt;script type=&amp;quot;text/javascript&amp;quot; &amp;gt;
+        var theList = new Array()
+
+        function compare(buttonId, input, output) {
+            var btn = document.getElementById(buttonId)
+            btn.onclick = function() {
+                var inputNumber = document.getElementById(&amp;quot;input&amp;quot;).value
+                theList.push(parseInt(inputNumber))
+
+                if (1 &amp;lt; theList.length) {
+                    theList = theList.sort(function(a,b) {
+                        return a - b;
+                    })
+                }
+
+                document.getElementById(output).innerHTML = theList
+            }
+        }
+
+        var m = new compare(&amp;#39;submit&amp;#39;, &amp;#39;input&amp;#39;, &amp;#39;output&amp;#39;)
+    &amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
     <item>
       <title>Tuesday</title>
       <link>http://cn.yuz.me/articles/18-March-2014/</link>
