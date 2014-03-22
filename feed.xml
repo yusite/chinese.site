@@ -5,9 +5,18 @@
     <atom:link href="http://cn.yuz.me/feed.xml" rel="self" type="application/rss+xml"></atom:link>
     <link>http://cn.yuz.me</link>
     <description>Living the artistic way</description>
-    <pubDate>Thu, 20 Mar 2014 01:00:00 +0100</pubDate>
+    <pubDate>Fri, 21 Mar 2014 01:00:00 +0100</pubDate>
     <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
     <language>en</language>
+    <item>
+      <title>Friday</title>
+      <link>http://cn.yuz.me/articles/21-March-2014/</link>
+      <pubDate>Fri, 21 Mar 2014 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://cn.yuz.me/articles/21-March-2014/</guid>
+      <author></author>
+      <description>&lt;p&gt;真正的成熟，是有规律的生活。规律生活的背后，是自我的约束。自我约束的背后，是责任。人应当像大自然一样，每天按时去生活，去工作。这就是修身的一种方式，只有修好自身，才能齐家，治国，平天下。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Thursday</title>
       <link>http://cn.yuz.me/articles/20-March-2014/</link>
